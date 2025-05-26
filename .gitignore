@@ -1,0 +1,1 @@
+-e "__pycache__/\n*.env\nvenv/\nnode_modules/\nbuild/\ndist/" 
