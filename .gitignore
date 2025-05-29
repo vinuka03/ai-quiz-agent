@@ -1,6 +1,20 @@
+# Python-specific
 __pycache__/
 *.env
 venv/
+
+# Node.js-specific
 node_modules/
 build/
 dist/
+
+# PDF uploads
+*.pdf
+
+# ChromaDB files
+backend/chroma_db/
+*.bin
+*.sqlite3
+
+# Logs
+*.log

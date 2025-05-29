@@ -1,0 +1,48 @@
+.file-input-hidden {
+  display: none;
+}
+
+.custom-file-upload {
+  display: inline-block;
+  padding: 12px 24px;
+  background-color: #5a9bf6;
+  color: white;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.custom-file-upload:hover {
+  background-color: #3478e3;
+}
+
+.upload-card button {
+  padding: 10px 20px;
+  background-color: #6200ee;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.upload-card button:hover {
+  background-color: #3700b3;
+}
+.file-name {
+  margin-top: 12px;
+  font-size: 0.95rem;
+  color: #333;
+  background: white;
+  padding: 6px 12px;
+  border-radius: 8px;
+  max-width: 250px;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  box-shadow: 0 0 4px rgba(0,0,0,0.1);
+}

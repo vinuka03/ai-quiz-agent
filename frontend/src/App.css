@@ -1,0 +1,36 @@
+.app-wrapper {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Left Panel */
+.left-panel {
+  flex: 1;
+  background: linear-gradient(to right, #d4fcd4, #bde4ea);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  position: relative;
+}
+
+.main-heading {
+  font-size: 2.5rem;
+  color: #0d47a1;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+/* Right Panel */
+.right-panel {
+  flex: 2;
+  background: linear-gradient(to right, #4fd1c5, #0d47a1);
+  padding: 40px;
+  overflow-y: auto;
+  color: white;
+}
+
+

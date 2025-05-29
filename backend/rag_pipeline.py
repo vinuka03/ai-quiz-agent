@@ -1,7 +1,11 @@
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.embeddings import SentenceTransformerEmbeddings
 from langchain.vectorstores import Chroma
+import requests
+import shutil
 import os
+
+
 
 def chunk_and_store(text: str, persist_directory="chroma_db"):
     # Split the text into chunks
@@ -11,17 +15,15 @@ def chunk_and_store(text: str, persist_directory="chroma_db"):
     # Create the embedding function
     embedding = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
 
-    # Create or overwrite a Chroma DB
+    # Overwrite the Chroma DB with new documents (no delete)
     vectordb = Chroma.from_documents(documents=chunks, embedding=embedding, persist_directory=persist_directory)
+
     vectordb.persist()
 
     print(f"✅ Stored {len(chunks)} chunks in vector DB.")
     return vectordb
 
 
-
-# Function: Generate Quiz via Local LLM (Ollama)
-# -----------------------------------------------
 def generate_quiz(question_prompt: str, persist_directory="chroma_db"):
     # Load the vector DB and retriever
     embedding = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
@@ -34,21 +36,23 @@ def generate_quiz(question_prompt: str, persist_directory="chroma_db"):
 
     # Prompt for quiz generation
     prompt = f"""
-    Based on the following document content, generate 3 multiple choice quiz questions.
-    Each question should have 4 options (A-D) and clearly indicate the correct answer.
-
+    Based on the following document content, generate 5 short quiz questions.
+    Each question should be direct, and only provide the correct answer (no options).
     Document Content:
     {context}
     """
 
-    # Call local model via Ollama API
+    # Call Ollama local API with Mistral
     response = requests.post(
         "http://localhost:11434/api/generate",
         json={
-            "model": "mistral",  # change to your model if needed
+            "model": "mistral:7b",   # use the exact tag you pulled
             "prompt": prompt,
             "stream": False
         }
     )
 
-    return response.json()["response"]
+    if response.status_code != 200:
+        return f"❌ Error from LLM: {response.text}"
+
+    return response.json().get("response", "⚠️ No response content.")
