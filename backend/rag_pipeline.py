@@ -4,6 +4,8 @@ from langchain.vectorstores import Chroma
 import requests
 import shutil
 import os
+from fastapi import FastAPI, Request
+
 
 
 
@@ -24,7 +26,7 @@ def chunk_and_store(text: str, persist_directory="chroma_db"):
     return vectordb
 
 
-def generate_quiz(question_prompt: str, persist_directory="chroma_db"):
+def generate_quiz(question_prompt: str, num_questions=5,persist_directory="chroma_db"):
     # Load the vector DB and retriever
     embedding = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
     vectordb = Chroma(persist_directory=persist_directory, embedding_function=embedding)
@@ -36,8 +38,10 @@ def generate_quiz(question_prompt: str, persist_directory="chroma_db"):
 
     # Prompt for quiz generation
     prompt = f"""
-    Based on the following document content, generate 5 short quiz questions.
+    Based on the following document content, generate {num_questions}  short quiz questions.
     Each question should be direct, and only provide the correct answer (no options).
+    Do not generate  questions about page numbers and links mentioned in the document.
+    Only give the question and the answer do not give extra insights and thoughts.
     Document Content:
     {context}
     """

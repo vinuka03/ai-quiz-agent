@@ -40,8 +40,9 @@ async def upload_pdf(file: UploadFile = File(...)):
 # Pydantic model for quiz prompt input
 class QuizRequest(BaseModel):
     question_prompt: str
+    num_questions: int = 5 
 
 @app.post("/generate-quiz/")
 async def generate_quiz_endpoint(request: QuizRequest):
-    quiz = generate_quiz(request.question_prompt)
+    quiz = generate_quiz(request.question_prompt, request.num_questions)
     return {"quiz": quiz}

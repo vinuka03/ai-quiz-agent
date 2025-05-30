@@ -52,3 +52,38 @@
   100% { transform: rotate(360deg); }
 }
 
+/* Shared button styling */
+.upload-button,
+.generate-button {
+  width: 160px;             /* Ensures both buttons are same width */
+  padding: 12px 0;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+/* Upload button */
+.upload-button {
+  background-color: #5a9bf6;
+  color: white;
+  border: none;
+}
+
+.upload-button:hover {
+  background-color: #3478e3;
+}
+
+/* Generate button */
+.generate-button {
+  background-color: #1f1f1f;
+  color: white;
+  border: none;
+}
+
+.generate-button:hover {
+  background-color: #000;
+}
+
+

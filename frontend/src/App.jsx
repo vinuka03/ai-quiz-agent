@@ -7,59 +7,90 @@ import "./App.css";
 function App() {
   const [file, setFile] = useState(null);
   const [quiz, setQuiz] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [quizCount, setQuizCount] = useState(10);
+  const [loadingStep, setLoadingStep] = useState("");  // "extracting" | "generating" | ""
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleUpload = async () => {
     if (!file) {
-      alert("Please select a PDF file");
       console.warn("❗ No file selected");
+      setErrorMessage("Please select a PDF or TXT file.");
       return;
     }
 
-    console.log("📤 Upload started for file:", file.name);
     const formData = new FormData();
     formData.append("file", file);
 
     try {
-      setLoading(true);
-      console.log("🔁 Sending POST /upload-pdf/");
+      setErrorMessage("");
+      setLoadingStep("extracting");
+      console.log("📤 Uploading:", file.name);
+
       const uploadRes = await axios.post("http://localhost:8000/upload-pdf/", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
-      console.log("✅ Upload response:", uploadRes.data);
+      console.log("✅ Uploaded successfully");
 
       const prompt = uploadRes.data.preview_text.slice(0, 300);
-      console.log("🧠 Prompt to send to LLM:", prompt);
+      setLoadingStep("generating");
+      console.log("🧠 Generating quiz from prompt...");
 
-      console.log("🔁 Sending POST /generate-quiz/");
       const quizRes = await axios.post("http://localhost:8000/generate-quiz/", {
         question_prompt: prompt,
+        num_questions: quizCount,  // 👈 Include selected quiz count
       });
 
-      console.log("✅ Quiz response received");
       setQuiz(quizRes.data.quiz);
+      console.log("✅ Quiz generated");
     } catch (err) {
-      console.error("❌ Upload or generation failed:", err);
-      alert("Failed to upload or generate quiz");
+      console.error("❌ Error during upload or quiz generation:", err);
+      setErrorMessage("Something went wrong during upload or quiz generation.");
     } finally {
-      setLoading(false);
+      setLoadingStep("");
     }
+  };
+
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    const maxSize = 5 * 1024 * 1024;
+    const allowedTypes = ["application/pdf", "text/plain"];
+
+    if (!selectedFile) return;
+
+    if (!allowedTypes.includes(selectedFile.type)) {
+      setErrorMessage("Only PDF and Text files are allowed.");
+      return;
+    }
+
+    if (selectedFile.size > maxSize) {
+      setErrorMessage("File size exceeds 5MB limit.");
+      return;
+    }
+
+    setFile(selectedFile);
+    setErrorMessage("");
+    console.log("📁 File selected:", selectedFile.name);
   };
 
   return (
     <div className="app-wrapper">
       <div className="left-panel">
+        <img src="/quiz-icon.png" alt="Logo" className="app-logo" />
         <h1 className="main-heading">Quiz And Learn</h1>
         <FileUpload
-          onFileChange={(e) => {
-            console.log("📁 File selected:", e.target.files[0]?.name);
-            setFile(e.target.files[0]);
-          }}
+          onFileChange={handleFileChange}
           onUpload={handleUpload}
-          loading={loading}
           fileName={file?.name}
+          loadingStep={loadingStep}
+          quizCount={quizCount}
+          onQuizCountChange={(e) => setQuizCount(Number(e.target.value))}
         />
+        {errorMessage && (
+          <div style={{ color: "#e63946", marginTop: "12px", fontWeight: "500" }}>
+            ⚠️ {errorMessage}
+          </div>
+        )}
       </div>
 
       <div className="right-panel">
