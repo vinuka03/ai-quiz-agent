@@ -1,6 +1,3 @@
-Here’s a complete and polished **README.md** file for your AI-Powered Quiz Generator project, tailored for GitHub:
-
----
 
 ````markdown
 # 🧠 AI-Powered Quiz Generator (RAG + Gemma 2B + React + FastAPI)
@@ -27,7 +24,7 @@ A full-stack web application that automatically generates short quizzes from upl
 
 ### 🔹 Frontend
 - React (Vite)
-- Vanilla CSS
+- CSS
 - Axios
 
 ### 🔹 Backend
