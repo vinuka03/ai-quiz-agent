@@ -97,17 +97,7 @@ npm run dev
 
 ---
 
-## 🙌 Acknowledgements
 
-* [LangChain](https://www.langchain.com/)
-* [Ollama](https://ollama.com/)
-* [ChromaDB](https://www.trychroma.com/)
-* [SentenceTransformers](https://www.sbert.net/)
 
-```
 
----
-
-Let me know if you want me to auto-generate a `requirements.txt` or project folder structure as well.
-```
 
