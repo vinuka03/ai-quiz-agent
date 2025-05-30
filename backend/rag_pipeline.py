@@ -46,7 +46,7 @@ def generate_quiz(question_prompt: str, persist_directory="chroma_db"):
     response = requests.post(
         "http://localhost:11434/api/generate",
         json={
-            "model": "mistral:7b",   # use the exact tag you pulled
+            "model": "gemma2:2b",   # use the exact tag you pulled
             "prompt": prompt,
             "stream": False
         }
